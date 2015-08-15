@@ -2,8 +2,6 @@ package com.mlifiuba.dondecurso;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 import com.mlifiuba.dondecurso.api.DetailsModel;
 import com.mlifiuba.dondecurso.api.InformationClient;
@@ -67,7 +65,7 @@ public class ShowDetails extends Activity {
 		}
 	}
 
-	public static class AddStringTask extends AsyncTask<Void, Void, List<Map<String, DetailsModel>>> {
+	public static class AddStringTask extends AsyncTask<Void, Void, Collection<DetailsModel>> {
 
 		private ProgressDialog dialog;
 		private Activity activity;
@@ -90,22 +88,19 @@ public class ShowDetails extends Activity {
 		}
 
 		@Override
-		protected List<Map<String, DetailsModel>> doInBackground(Void... unused) {
-//			String target = activity.getIntent().getStringExtra(Index.SELECTED_ITEM);
-//			List<Map<String, DetailsModel>> deptos = InformationClient.getCursos(target);
-			return Collections.emptyList();
+		protected Collection<DetailsModel> doInBackground(Void... unused) {
+			String target = activity.getIntent().getStringExtra(Index.SELECTED_ITEM);
+			Collection<DetailsModel> deptos = InformationClient.getCursos(target);
+			return deptos;
 		}
 
 		@Override
-		protected void onPostExecute(List<Map<String, DetailsModel>> result) {
+		protected void onPostExecute(Collection<DetailsModel> result) {
 			StringBuilder builder = new StringBuilder();
-			for (Map<String, DetailsModel> map : result) {
-				Collection<DetailsModel> values = map.values();
-				for (DetailsModel detailsModel : values) {
-					builder.append(detailsModel.toString()).append("/n");
-				}
+			for (DetailsModel detailsModel : result) {
+				builder.append(detailsModel.toString()).append("/n");
 			}
-			detailsTextView.setText("Hola!");
+			detailsTextView.setText(builder.toString());
 			dialog.dismiss();
 		}
 	}
