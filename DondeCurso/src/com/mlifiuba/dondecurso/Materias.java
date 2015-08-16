@@ -69,6 +69,7 @@ public class Materias extends Activity {
 					InformationModel itemAtPosition = (InformationModel) arg0.getItemAtPosition(arg2);
 					Intent intent = new Intent(getActivity(), ShowDetails.class);
 					intent.putExtra(Index.SELECTED_ITEM, itemAtPosition.getCodigo());
+					intent.putExtra(Index.SELECTED_DESCRIPTION, itemAtPosition.getNombre());
 					startActivity(intent);
 				}
 			});

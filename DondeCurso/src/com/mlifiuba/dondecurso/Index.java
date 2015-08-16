@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 public class Index extends Activity {
 
 	public static final String SELECTED_ITEM = "selected_item";
+	public static final String SELECTED_DESCRIPTION = "selected_description";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

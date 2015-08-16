@@ -30,6 +30,10 @@ public class ShowDetails extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_show_details);
+		String codigo = getIntent().getStringExtra(Index.SELECTED_ITEM);
+		String nombre = getIntent().getStringExtra(Index.SELECTED_DESCRIPTION);
+		setTitle(codigo + " - " + nombre);
+
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction().add(R.id.container, new PlaceholderFragment()).commit();
 		}
