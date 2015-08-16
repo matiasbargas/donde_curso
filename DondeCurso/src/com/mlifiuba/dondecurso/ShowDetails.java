@@ -1,14 +1,18 @@
 package com.mlifiuba.dondecurso;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 import com.mlifiuba.dondecurso.api.DetailsModel;
+import com.mlifiuba.dondecurso.api.Horario;
 import com.mlifiuba.dondecurso.api.InformationClient;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class ShowDetails extends Activity {
@@ -49,19 +55,81 @@ public class ShowDetails extends Activity {
 	 */
 	public static class PlaceholderFragment extends Fragment {
 
-		private TextView detailsView;
+		private ListView coursesListView;
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_show_details, container, false);
-			detailsView = (TextView) rootView.findViewById(R.id.details);
+			coursesListView = (ListView) rootView.findViewById(R.id.coursesList);
 			return rootView;
 		}
 
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
-			new AddStringTask(detailsView, getActivity()).execute();
+
+			ArrayAdapter<DetailsModel> adapter = new MyAdapter(getActivity(), android.R.layout.simple_list_item_1,
+					new ArrayList<DetailsModel>());
+			coursesListView.setAdapter(adapter);
+
+			new AddStringTask(adapter, getActivity()).execute();
+		}
+	}
+
+	public static class MyAdapter extends ArrayAdapter<DetailsModel> {
+
+		public MyAdapter(Context context, int resource, List<DetailsModel> objects) {
+			super(context, resource, objects);
+		}
+
+		@SuppressLint("ViewHolder")
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View rowView = inflater.inflate(R.layout.details_row, parent, false);
+
+			DetailsModel item = getItem(position);
+			if (item != null) {
+				TextView textView = (TextView) rowView.findViewById(R.id.profesor);
+				textView.setText(item.getDocentes());
+				TextView horariosListView = (TextView) rowView.findViewById(R.id.horarios_text);
+				List<Horario> horarios = item.getHorarios();
+				StringBuilder builder = new StringBuilder();
+				for (Horario horario : horarios) {
+					String aula = horario.getAula();
+					if (aula != null) {
+						builder.append(horario.getDia() + " de " + horario.getDesde() + " a " + horario.getHasta()
+								+ ". Aula " + aula + ".").append("\n");
+					}
+				}
+				horariosListView.setText(builder.toString());
+			}
+			return rowView;
+		}
+	}
+
+	public static class HorariosAdapter extends ArrayAdapter<Horario> {
+
+		public HorariosAdapter(Context context, int resource, List<Horario> objects) {
+			super(context, resource, objects);
+		}
+
+		@SuppressLint("ViewHolder")
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			View rowView = inflater.inflate(R.layout.horarios_details, parent, false);
+
+			Horario item = getItem(position);
+			if (item != null) {
+				TextView textView = (TextView) rowView.findViewById(R.id.horario_s);
+				textView.setText("Aula " + item.getAula() + ". " + item.getDia() + " de " + item.getDesde() + " hasta "
+						+ item.getHasta());
+
+			}
+			return rowView;
 		}
 	}
 
@@ -69,11 +137,11 @@ public class ShowDetails extends Activity {
 
 		private ProgressDialog dialog;
 		private Activity activity;
-		private TextView detailsTextView;
+		private ArrayAdapter<DetailsModel> adapter;
 
-		public AddStringTask(TextView detailsTextView, Activity activity) {
+		public AddStringTask(ArrayAdapter<DetailsModel> adapter, Activity activity) {
 			super();
-			this.detailsTextView = detailsTextView;
+			this.adapter = adapter;
 			this.activity = activity;
 		}
 
@@ -96,11 +164,9 @@ public class ShowDetails extends Activity {
 
 		@Override
 		protected void onPostExecute(Collection<DetailsModel> result) {
-			StringBuilder builder = new StringBuilder();
 			for (DetailsModel detailsModel : result) {
-				builder.append(detailsModel.toString()).append("/n");
+				adapter.add(detailsModel);
 			}
-			detailsTextView.setText(builder.toString());
 			dialog.dismiss();
 		}
 	}
