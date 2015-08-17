@@ -2,20 +2,17 @@ package com.mlifiuba.dondecurso.api;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
 import com.mlifiuba.dondecurso.web.client.HttpClient;
 
-import android.util.Log;
-
 public class InformationClient {
 
 	private static final Gson gson = new Gson();
 
-	private static final String BASE_URL = "http://www.mli-fiuba.com.ar/eqac/?";
+	private static final String BASE_URL = "http://www.mli-fiuba.com.ar/eqac/v2.0/?";
 	private static final String VERSION = "v=1.0";
 
 	private static final String DEPARTMENT_ID = "ds=1";
