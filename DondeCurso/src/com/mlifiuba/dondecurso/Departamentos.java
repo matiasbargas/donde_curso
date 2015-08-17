@@ -138,6 +138,9 @@ public class Departamentos extends Activity {
 
 		@Override
 		protected void onPostExecute(List<InformationModel> result) {
+			// Quito el último elemento, que es vacío.
+			result.remove(result.size() - 1);
+			
 			for (InformationModel model : result) {
 				adapter.add(model);
 			}

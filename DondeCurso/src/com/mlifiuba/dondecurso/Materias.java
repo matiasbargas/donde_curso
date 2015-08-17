@@ -142,6 +142,8 @@ public class Materias extends Activity {
 		@Override
 		protected void onPostExecute(List<InformationModel> result) {
 			if (result != null) {
+				// Quito el último elemento, que es vacío.
+				result.remove(result.size() - 1);
 				for (InformationModel model : result) {
 					adapter.add(model);
 				}
