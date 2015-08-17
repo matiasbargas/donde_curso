@@ -104,7 +104,7 @@ public class ShowDetails extends Activity {
 					String aula = horario.getAula();
 					if (aula != null) {
 						builder.append(horario.getDia() + " de " + horario.getDesde() + " a " + horario.getHasta()
-								+ ". Aula " + aula + ".").append("\n");
+								+ ". Aula " + aula + ". " + horario.getTipo()).append("\n");
 					}
 				}
 				horariosListView.setText(builder.toString());
