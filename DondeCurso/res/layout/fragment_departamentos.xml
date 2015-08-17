@@ -19,4 +19,5 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="@dimen/divisor"/>
 
+    <include layout="@layout/footer" />
 </LinearLayout>

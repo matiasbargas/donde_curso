@@ -16,4 +16,5 @@
         android:onClick="sendMessage"
         android:text="@string/button_send" />
 
+    <include layout="@layout/footer" />
 </RelativeLayout>

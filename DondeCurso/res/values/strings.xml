@@ -8,5 +8,6 @@
     <string name="title_activity_departamentos">Departamentos</string>
     <string name="title_activity_materias">Materias</string>
     <string name="title_activity_show_details">Detalle</string>
+    <string name="fixed_footer">Desarrollo Independiente</string>
 
 </resources>
